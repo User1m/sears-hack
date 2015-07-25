@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: "0.0.1"
-  title: Hello World App
+  title: Sears Hack App
 # during dev, should point to your local machine
 host: localhost:10010
 # basePath prefixes all resource paths 
@@ -20,40 +20,155 @@ produces:
 x-a127-config: {}
 x-a127-services: {}
 paths:
-  /hello:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
-    x-a127-apply: {}
-    get:
-      description: Returns 'Hello' to the caller
-      # used as the method name of the controller
-      operationId: hello
-      parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
-      responses:
-        "200":
-          description: Success
-          schema:
-            # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
-        # responses may fall through to errors
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
+  # /hello:
+  #   # binds a127 app logic to a route
+  #   x-swagger-router-controller: hello_world
+  #   x-a127-apply: {}
+  #   get:
+  #     description: Returns 'Hello' to the caller
+  #     # used as the method/function name of the controller
+  #     operationId: hello
+  #     parameters:
+  #       - name: name
+  #         in: query
+  #         description: The name of the person to whom to say hello
+  #         required: false
+  #         type: string
+  #     responses:
+  #       "200":
+  #         description: Success
+  #         schema:
+  #           # a pointer to a definition
+  #           $ref: "#/definitions/HelloWorldResponse"
+  #       # responses may fall through to errors
+  #       default:
+  #         description: Error
+  #         schema:
+  #           $ref: "#/definitions/ErrorResponse"
+
+  # /hotels:
+  #   # binds a127 app logic to a route
+  #   x-swagger-router-controller: hotels
+  #   x-a127-apply: {}    
+  #   get:
+  #     description: Returns a list of nearby hotels
+  #     # used as the method name of the controller
+  #     operationId: getHotels
+  #     parameters:
+  #       - name: location
+  #         in: query
+  #         type: string
+  #     responses:
+  #       "200":
+  #         description: Success
+  #         schema:
+  #           # a pointer to a definition
+  #           $ref: "#/definitions/HelloWorldResponse"
+  #       # responses may fall through to errors
+  #       default:
+  #         description: Error
+  #         schema:
+  #           $ref: "#/definitions/ErrorResponse"
+  
+  # /restaurants:
+  #   # binds a127 app logic to a route
+  #   x-swagger-router-controller: restaurants
+  #   x-a127-apply: {}    
+  #   get:
+  #     description: Returns a list of nearby places to eat
+  #     # used as the method name of the controller
+  #     operationId: getRestaurants
+  #     # parameters:
+  #     #   - name: latlong
+  #     #     in: query
+  #     #     type: string
+  #     responses:
+  #       "200":
+  #         description: Success
+  #         schema:
+  #           # a pointer to a definition
+  #           $ref: "#/definitions/HelloWorldResponse"
+  #       # responses may fall through to errors
+  #       default:
+  #         description: Error
+  #         schema:
+  #           $ref: "#/definitions/ErrorResponse"
+  
+  # # {} = variable
+  # /restaurants/{id}/reviews:
+  #   # binds a127 app logic to a route
+  #   x-swagger-router-controller: restaurants
+  #   x-a127-apply: {}
+  #   get:
+  #     description: Returns a list of reviews for a specific restaurant
+  #     # used as the method name of the controller
+  #     operationId: getReviews
+  #     parameters:
+  #       - name: id
+  #         in: path
+  #         description: The restID of the restaurant
+  #         required: true
+  #         type: number
+  #     responses:
+  #       "200":
+  #         description: Success
+  #         schema: {}
+  #         #   # a pointer to a definition
+  #         #   $ref: "#/definitions/Entity"
+  #       # responses may fall through to errors
+  #       default:
+  #         description: Error
+  #         schema:
+  #           $ref: "#/definitions/ErrorResponse"
+  
+  # /reviews:
+  #   x-swagger-router-controller: reviews
+  #   x-volos-authorizations: {}
+  #   x-volos-apply: {}
+  #   post:
+  #     x-volos-apply: {}
+  #     description: Posts a new review
+  #     operationId: postReview
+  #     parameters:
+  #       - name: body
+  #         in: body
+  #         description: Post review and rating
+  #         required: true
+  #         schema:
+  #           properties:
+  #             title:
+  #               type: string
+  #             restID:
+  #               type: integer
+  #             rating:
+  #               type: integer
+  #             reviewer:
+  #               type: string
+  #             body:
+  #               type: string
+  #           required: ["title", "body", "rating"]
+  #     responses:
+  #       "200":
+  #         description: Success
+  #         schema: {}
+  #       default:
+  #         description: Error
+  #         schema: {}
+
   /deals:
     # binds a127 app logic to a route
     x-swagger-router-controller: deals
     x-a127-apply: {}
     get:
-      description: Returns deals of a catergory to the caller
-      # used as the method name of the controller
+      description: Returns 'deals' of a catergory to the caller
+      # used as the method/function name of the controller
       operationId: getDealsofCategory
       parameters:
+        - name: store
+          in: query
+          description: Sears or Kmart
+          required: true
+          type: string
         - name: category
           in: query
           description: The specific catergory to target
@@ -70,14 +185,13 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-   
   /products:
     # binds a127 app logic to a route
     x-swagger-router-controller: products
     x-a127-apply: {}
     get:
-      description: Returns list of products to the caller
-      # used as the method name of the controller
+      description: Returns list of 'products' to the caller
+      # used as the method/function name of the controller
       operationId: getProducts
       parameters:
         - name: keyword
@@ -96,6 +210,7 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+
 # complex objects have schema definitions
 definitions:
   HelloWorldResponse:
