@@ -16,7 +16,7 @@
       if(error){
         res.send(error);
       }else{
-        res.json(body);
+        res.json(JSON.parse(body));
       }
     });
 
@@ -30,7 +30,7 @@
       if(error){
         res.send(error);
       }else{
-        res.json(body);
+        res.json(JSON.parse(body));
       }
     });
   }
