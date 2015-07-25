@@ -23,7 +23,7 @@
       }
     };
 
-    request(options, function(error, response, body){
+    request("http://api.developer.sears.com/v2.1/deals/fetchWeeklyDeals?store="+store+"&category=Sears_"+category+"&apikey="+ apikey, function(error, response, body){
       if(error){
         res.send(error);
       }else{

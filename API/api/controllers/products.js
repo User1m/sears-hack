@@ -22,12 +22,14 @@
       }
     };
 
+    // console.log(options.url);
 
-    request( options,
+    request.get( options,
       function(error, response, body){
         if(error){
           res.send(error);
         }else{
+          // console.log(body);
           res.json(JSON.parse(body));
         }
       });
