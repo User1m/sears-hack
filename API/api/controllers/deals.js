@@ -27,7 +27,8 @@
       if(error){
         res.send(error);
       }else{
-        res.json(JSON.parse(body));
+        // console.log(body);
+        res.send(JSON.parse(body));
       }
     });
   }
