@@ -245,8 +245,8 @@ paths:
       parameters:
         - name: store
           in: query
-          description: Sears or Kmart
-          required: true
+          description: Sears or Kmart. Defaults to Sears
+          required: false
           type: string
         - name: category
           in: query
@@ -289,7 +289,32 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-
+  
+  /products/{partnum}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: products
+    x-a127-apply: {}
+    get:
+      description: Returns a specific 'product' to the caller
+      # used as the method/function name of the controller
+      operationId: getProduct
+      parameters:
+        - name: partnum
+          in: path
+          description: The product id
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 # complex objects have schema definitions
 definitions:
   HelloWorldResponse:
