@@ -42,6 +42,7 @@
 
     var partnum = req.swagger.params.partnum.value;
     var store = req.swagger.params.store.value || "Sears";
+
     request("http://api.developer.sears.com/v3/productDetail/getProduct/"+store+"/json/"+partnum+"?apikey="+apikey, function(error, response, body){
 
       if(error){

@@ -304,6 +304,11 @@ paths:
           description: The product id
           required: true
           type: string
+        - name: store
+          in: query
+          description: Sears or Kmart. Defaults to Sears
+          required: false
+          type: string
       responses:
         "200":
           description: Success
