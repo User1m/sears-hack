@@ -45,6 +45,57 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /deals:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: deals
+    x-a127-apply: {}
+    get:
+      description: Returns deals of a catergory to the caller
+      # used as the method name of the controller
+      operationId: getDealsofCategory
+      parameters:
+        - name: category
+          in: query
+          description: The specific catergory to target
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+   
+  /products:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: products
+    x-a127-apply: {}
+    get:
+      description: Returns list of products to the caller
+      # used as the method name of the controller
+      operationId: getProducts
+      parameters:
+        - name: keyword
+          in: query
+          description: The specific keyword to search
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 # complex objects have schema definitions
 definitions:
   HelloWorldResponse:
