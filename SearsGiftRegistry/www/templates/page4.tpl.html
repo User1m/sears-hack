@@ -1,4 +1,5 @@
-<ion-view title="Search">
+<!--<script id="page4.tpl.html" type="text/ng-template">-->
+<ion-view title="Search" ng-controller="MyController">
     <ion-content padding="true" class="has-header">
         <div class="list card">
             <div class="item item-divider">Products</div>
@@ -6,16 +7,21 @@
                 <ion-list>
                     <label class="item item-input">
                         <span class="input-label">Input</span>
-                        <input type="text" placeholder="Search for gifts!">
+                        <input type="text" ng-model="query" ng-model-options="{ getterSetter: true }" placeholder="Search for gifts!">
                     </label>
                 </ion-list>
-                <button class="button button-stable button-block ">Search!</button>
+                <button class="button button-stable button-block" ng-click="searchForProducts(query)">Search!</button>
             </div>
         </div>
         <ion-list>
-            <ion-item>Item 1</ion-item>
-            <ion-item>Item 2</ion-item>
-            <ion-item>Item 3</ion-item>
+            <ion-item ng-repeat="product in products">
+                <center style="width:100%">
+                    <img src="{{product.image}}" style=" height: 200px;">
+                </center>
+                <div class="item item-divider">{{product.name}}</div>
+                <div class="item item-divider">${{product.price}}</div>
+            </ion-item>
         </ion-list>
     </ion-content>
 </ion-view>
+<!--</script>-->

@@ -20,4 +20,11 @@ angular.module('services.userServices', ['ngResource'])
         get: { method: 'GET', params: {}, isArray: false }
       });
     }
+  ])
+  .factory('RegistryService', ['$resource',
+    function ($resource) {
+      return $resource('http://user1m-test.apigee.net/API/lists/:id', {}, {
+        get: { method: 'GET', params: {}, isArray: false }
+      });
+    }
   ]);
