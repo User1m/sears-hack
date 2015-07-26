@@ -155,7 +155,36 @@ paths:
   #       default:
   #         description: Error
   #         schema: {}
-  
+  /login:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: login
+    x-a127-apply: {}
+    get:
+      description: Returns a user to the caller
+      # used as the method/function name of the controller
+      operationId: getLogin
+      parameters:
+        - name: username
+          in: query
+          description: user account username
+          required: true
+          type: string
+        - name: password
+          in: query
+          description: user account password
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"  
   /users/{id}:
     # binds a127 app logic to a route
     x-swagger-router-controller: users
@@ -277,6 +306,11 @@ paths:
           in: query
           description: The specific keyword to search
           required: true
+          type: string
+        - name: store
+          in: query
+          description: Sears or Kmart. Defaults to Sears
+          required: false
           type: string
       responses:
         "200":
