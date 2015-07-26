@@ -14,6 +14,8 @@ schemes:
 # format of bodies a client can send (Content-Type)
 consumes:
   - application/json
+  - application/x-www-form-urlencoded
+  - multipart/form-data
 # format of the responses to the client (Accepts)
 produces:
   - application/json
@@ -155,6 +157,7 @@ paths:
   #       default:
   #         description: Error
   #         schema: {}
+  
   /login:
     # binds a127 app logic to a route
     x-swagger-router-controller: login
@@ -184,8 +187,47 @@ paths:
         default:
           description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"  
-  /users/{id}:
+            $ref: "#/definitions/ErrorResponse"
+
+  /users/save:
+    x-swagger-router-controller: users
+    x-volos-authorizations: {}
+    x-volos-apply: {}
+    post:
+      x-volos-apply: {}
+      description: Posts a new user
+      operationId: postUser
+      parameters:
+        - name: user
+          in: body
+          description: User's info
+          required: true
+          schema:
+            properties:
+              username:
+                type: string
+              email:
+                type: string
+              phone:
+                type: string
+              type:
+                type: string
+              password:
+                type: string
+              husband:
+                type: string
+              wife:
+                type: string
+            required: ["username", "email", "type"]
+      responses:
+        "200":
+          description: Success
+          schema: {}
+        default:
+          description: Error
+          schema: {}
+
+  /users/{uuid}:
     # binds a127 app logic to a route
     x-swagger-router-controller: users
     x-a127-apply: {}
@@ -194,9 +236,9 @@ paths:
       # used as the method/function name of the controller
       operationId: getUser
       parameters:
-        - name: id
+        - name: uuid
           in: path
-          description: user account id
+          description: user account uuid
           required: true
           type: number
       responses:
@@ -211,7 +253,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
   
-  /users/{id}/list:
+  /users/{uuid}/list:
     # binds a127 app logic to a route
     x-swagger-router-controller: users
     x-a127-apply: {}
@@ -220,9 +262,9 @@ paths:
       # used as the method/function name of the controller
       operationId: getUserList
       parameters:
-        - name: id
+        - name: uuid
           in: path
-          description: user account id
+          description: user account uuid
           required: true
           type: number
       responses:
@@ -237,7 +279,42 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
             
-  /lists/{id}:
+  /users/{uuid}/list/save:
+    x-swagger-router-controller: users
+    x-volos-authorizations: {}
+    x-volos-apply: {}
+    post:
+      x-volos-apply: {}
+      description: Create new list under a user
+      operationId: postList
+      parameters:
+        - name: uuid
+          in: path
+          description: User account id
+          required: true
+          type: string
+        - name: list
+          in: body
+          description: Post list data
+          required: true
+          schema:
+            properties:
+              accountuuid:
+                type: string
+              listname:
+                type: string
+              products:
+                type: string
+            required: ["accountuuid", "listname", "products"]
+      responses:
+        "200":
+          description: Success
+          schema: {}
+        default:
+          description: Error
+          schema: {}
+          
+  /lists/{uuid}:
     # binds a127 app logic to a route
     x-swagger-router-controller: lists
     x-a127-apply: {}
@@ -246,9 +323,9 @@ paths:
       # used as the method/function name of the controller
       operationId: getList
       parameters:
-        - name: id
+        - name: uuid
           in: path
-          description: list id
+          description: list uuid
           required: true
           type: number
       responses:
@@ -262,6 +339,7 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  
   
   /deals:
     # binds a127 app logic to a route
@@ -335,7 +413,7 @@ paths:
       parameters:
         - name: partnum
           in: path
-          description: The product id
+          description: The product identifier
           required: true
           type: string
         - name: store
