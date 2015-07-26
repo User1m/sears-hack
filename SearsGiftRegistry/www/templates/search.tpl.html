@@ -1,26 +1,28 @@
 <!--<script id="page4.tpl.html" type="text/ng-template">-->
-<ion-view title="Search" ng-controller="MyController">
+<ion-view title="Search" >
     <ion-content padding="true" class="has-header" >
         <div class="list card">
-            <div class="item item-divider">Products</div>
+            <div class="item item-divider">Products for {{currentUser.husband}} & {{currentUser.wife}}</div>
             <div class="item item-body">
                 <ion-list>
                     <label class="item item-input">
-                        <span class="input-label">Input</span>
+                        <span class="input-label">Keyword</span>
                         <input type="text" ng-model="query" ng-model-options="{ getterSetter: true }" placeholder="Search for gifts!">
                     </label>
                 </ion-list>
                 <button class="button button-stable button-block" ng-click="searchForProducts(query)">Search!</button>
                 <a href="#/lists" class="button button-stable button-block ">View Current Gift Lists!</a>
+                <button ng-if="products.length > 0" class="button button-stable button-block" ng-click="createListForAccount()">Save Selected Products!</button>
             </div>
         </div>
         <ion-list>
             <ion-item ng-repeat="product in products">
                 <center style="width:100%">
-                    <img src="{{product.image}}" style=" height: 200px;">
+                    <img src="{{product.img}}" style=" height: 200px;">
                 </center>
                 <div class="item item-divider">{{product.name}}</div>
                 <div class="item item-divider">${{product.price}}</div>
+                <ion-checkbox ng-click="toggleSelection(product)">Add to a gift registry!</ion-checkbox>
             </ion-item>
         </ion-list>
     </ion-content>

@@ -27,11 +27,34 @@
 
 angular.module('app', ['ionic', 'ngRoute', 'services.userServices', 'services.searsServices', 'ionic.service.core'])
   .controller("MyController",
-    ['$scope', 'LoginService', 'UserService', 'UserListService', 'DealService', 'ProductService', 'RegistryService', 'NewUserService',
+    ['$scope', '$document', 'LoginService', 'UserService', 'UserListService', 'DealService', 'ProductService', 'RegistryService', 'NewUserService',
       'NewListService',
-      function ($scope, LoginService, UserService, UserListService, DealService, ProductService, RegistryService, NewUserService,
+      function ($scope, $document, LoginService, UserService, UserListService, DealService, ProductService, RegistryService, NewUserService,
         NewListService) {
-        $scope.username = 'TestUsername';
+        $scope.username = 'jamesandellen';
+        $scope.password = "Test";
+        
+        $document.ready(function(){
+          console.log("loaded controller!")
+          $scope.currentUser = JSON.parse(localStorage.getItem("currentUser"));
+          console.log($scope.currentUser);
+          UserListService.get({ uuid: $scope.currentUser.uuid }, function (data) {
+            console.log("UserListService");
+            console.log(data);
+            var results = data.SearchResults.Products;
+              for (var i = 0; i < results.length; i++) {
+                $scope.selectedproducts.push({
+                  PartNumber: results[i].Id.PartNumber,
+                  name: results[i].Description.Name,
+                  img: results[i].Description.ImageURL,
+                  price: results[i].Price.DisplayPrice,
+                  instock: true,
+                  claimed: false,
+                  bywho: ""
+                });
+              }
+          });
+        });
   
         /*
           API tests
@@ -51,26 +74,50 @@ angular.module('app', ['ionic', 'ngRoute', 'services.userServices', 'services.se
         //   console.log(data);
         // });
         $scope.createUser = function(username, email, phone, userType, password, husband, wife){
-              NewUserService.save({
+              var userData = {
                 username: username, 
                 email: email, 
                 phone: phone, 
                 type: userType, 
                 password: password, 
                 husband: husband, 
-                wife: wife }, 
+                wife: wife };
+              localStorage.setItem("currentUser", JSON.stringify(userData));
+              
+              NewUserService.save(userData, 
                 function(data){
                   console.log("creating new user");
                   console.log(data);
+                  localStorage.setItem("currentUser", JSON.stringify(data.entities[0]));
+                  $scope.currentUser = data.entities[0];
+                  
+                  UserListService.get({ uuid: $scope.currentUser.uuid }, function (data) {
+                    console.log("UserListService");
+                    console.log(data);
+                  });
               });
         }
+
+        $scope.login = function (username, password) {
+          LoginService.get({ username: username, password: password }, function (data) {
+            console.log("LoginService");
+            localStorage.setItem("currentUser", JSON.stringify(data.entities[0]));
+            $scope.currentUser = data.entities[0];
+            console.log(data);
+            
+            UserListService.get({ uuid: $scope.currentUser.uuid }, function (data) {
+              console.log("UserListService");
+              console.log(data);
+            });
+          });
+        };
         
-        $scope.createListForAccount = function(uuid, name, product_list){
+        $scope.createListForAccount = function(){
            NewListService.save({
-             accountuuid: uuid,
-             listname: name,
-             products: product_list}, function(data){
-               console.log("creating list for user " + uuid);
+             accountuuid: $scope.currentUser.uuid,
+             listname: $scope.currentUser.husband + " & " + $scope.currentUser.wife + "'s Gify Registry",
+             products: $scope.selectedProducts}, function(data){
+               console.log("creating list for user " + $scope.currentUser.uuid);
                console.log(data);
              });
         };
@@ -100,10 +147,29 @@ angular.module('app', ['ionic', 'ngRoute', 'services.userServices', 'services.se
         /*
           functions
         */
+        $scope.products = [];
+          
+        $scope.selectedProducts = [];
+          
+        $scope.toggleSelection = function toggleSelection(product) {
+          var idx = $scope.selection.indexOf(product);
 
-          $scope.products = [];
+          // is currently selected
+          if (idx > -1) {
+            $scope.selection.splice(idx, 1);
+          }
 
-          $scope.searchForProducts = function (query) {
+          // is newly selected
+          else {
+            $scope.selection.push(product);
+          }
+          console.log("select products changed");
+          console.log($scope.selectedProducts);
+        };
+
+
+
+        $scope.searchForProducts = function (query) {
             ProductService.get({ keyword: query, store: "Sears" }, function (data) {
               console.log("ProductService (List)");
               console.log(data);
@@ -111,10 +177,13 @@ angular.module('app', ['ionic', 'ngRoute', 'services.userServices', 'services.se
               var results = data.SearchResults.Products;
               for (var i = 0; i < results.length; i++) {
                 $scope.products.push({
-                  id: results[i].Id.PartNumber,
+                  PartNumber: results[i].Id.PartNumber,
                   name: results[i].Description.Name,
-                  image: results[i].Description.ImageURL,
-                  price: results[i].Price.DisplayPrice
+                  img: results[i].Description.ImageURL,
+                  price: results[i].Price.DisplayPrice,
+                  instock: true,
+                  claimed: false,
+                  bywho: ""
                 });
               }
             });
@@ -145,22 +214,31 @@ angular.module('app', ['ionic', 'ngRoute', 'services.userServices', 'services.se
 
       .state('login', {
         url: '/login',
-        templateUrl: 'templates/login.tpl.html'
+        templateUrl: 'templates/login.tpl.html',
+        controller: 'MyController'
       })
-
+      
+      .state('signup', {
+        url: '/signup',
+        templateUrl: 'templates/signup.tpl.html',
+        controller: 'MyController'
+      })
       .state('search', {
         url: '/search',
-        templateUrl: 'templates/search.tpl.html'
+        templateUrl: 'templates/search.tpl.html',
+        controller: 'MyController'
       })
       
       .state('lists', {
         url: '/lists',
-        templateUrl: 'templates/lists.tpl.html'
+        templateUrl: 'templates/lists.tpl.html',
+        controller: 'MyController'
       })
       
       .state('side-menu1', {
         url: '/menu',
-        templateUrl: 'templates/side-menu1.tpl.html'
+        templateUrl: 'templates/side-menu1.tpl.html',
+        controller: 'MyController'
       })
     ;
 
