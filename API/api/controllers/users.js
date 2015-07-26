@@ -14,7 +14,7 @@
   function user(req, res){
 
     var id = req.swagger.params.id.value;
-    request("http://api.usergrid.com/user1m/sandbox/users?ql=id="+id, function(error, response, body){
+    request("http://api.usergrid.com/user1m/sandbox/users?ql=uuid="+id, function(error, response, body){
       if(error){
         res.send(error);
       }else{
@@ -40,7 +40,7 @@
   function postList(req, res){
     var auuid = req.swagger.params.uuid.value;
 
-    request.post("http://user1m-test.apigee.net/API/users/"+auuid+"/list/save",
+    request.post("http://api.usergrid.com/user1m/sandbox/list",
       { //data
         form: JSON.stringify(req.body)
       },
@@ -55,7 +55,7 @@
 
   function postUser(req, res){
 
-    request.post("http://user1m-test.apigee.net/API/users/save",
+    request.post("http://api.usergrid.com/user1m/sandbox/users",
       { //data
         form: JSON.stringify(req.body)
       },

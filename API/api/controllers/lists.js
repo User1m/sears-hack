@@ -12,7 +12,7 @@
   function list(req, res){
 
     var id = req.swagger.params.id.value;
-    request("http://api.usergrid.com/user1m/sandbox/list?ql=id="+id, function(error, response, body){
+    request("http://api.usergrid.com/user1m/sandbox/list?ql=uuid="+id, function(error, response, body){
       if(error){
         res.send(error);
       }else{
