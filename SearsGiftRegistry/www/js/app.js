@@ -101,41 +101,41 @@ angular.module('app', ['ionic', 'ngRoute', 'services.userServices', 'services.se
           functions
         */
 
-        $scope.products = [];
+          $scope.products = [];
 
-        $scope.searchForProducts = function (query) {
-          ProductService.get({ keyword: query, store: "Sears" }, function (data) {
-            console.log("ProductService (List)");
-            console.log(data);
-            $scope.products = [];
-            var results = data.SearchResults.Products;
-            for (var i = 0; i < results.length; i++) {
-              $scope.products.push({
-                id: results[i].Id.PartNumber,
-                name: results[i].Description.Name,
-                image: results[i].Description.ImageURL,
-                price: results[i].Price.DisplayPrice
-              });
-            }
-          });
-        };
+          $scope.searchForProducts = function (query) {
+            ProductService.get({ keyword: query, store: "Sears" }, function (data) {
+              console.log("ProductService (List)");
+              console.log(data);
+              $scope.products = [];
+              var results = data.SearchResults.Products;
+              for (var i = 0; i < results.length; i++) {
+                $scope.products.push({
+                  id: results[i].Id.PartNumber,
+                  name: results[i].Description.Name,
+                  image: results[i].Description.ImageURL,
+                  price: results[i].Price.DisplayPrice
+                });
+              }
+            });
+          };
 
-      }])
-  .run(function ($ionicPlatform) {
-    $ionicPlatform.ready(function () {
+        }])
+.run(function ($ionicPlatform) {
+  $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
-      if (window.cordova && window.cordova.plugins.Keyboard) {
-        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      }
-      if (window.StatusBar) {
+  if (window.cordova && window.cordova.plugins.Keyboard) {
+    cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+  }
+  if (window.StatusBar) {
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
       }
     });
-  })
+})
 
-  .config(function ($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider) {
 
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
@@ -163,14 +163,13 @@ angular.module('app', ['ionic', 'ngRoute', 'services.userServices', 'services.se
         templateUrl: 'templates/side-menu1.tpl.html'
       })
     ;
-    
+
     // if none of the above states are matched, use this as the fallback
-  
+
     $urlRouterProvider.otherwise('/login');
 
-
   })
-  .config(['$ionicAppProvider', function ($ionicAppProvider) {
+.config(['$ionicAppProvider', function ($ionicAppProvider) {
     // Identify app
     $ionicAppProvider.identify({
       // The App ID for the server
