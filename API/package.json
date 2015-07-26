@@ -9,7 +9,6 @@
   "main": "app.js",
   "dependencies": {
     "a127-magic": "^0.11.0",
-    "apigee-127": "^0.17.0",
     "express": "^3.21.1",
     "request": "^2.60.0",
     "volos-analytics-apigee": "",
@@ -24,17 +23,17 @@
     "volos-quota-memory": "",
     "volos-quota-redis": "",
     "volos-spikearrest-memory": ""
-  },
-  "devDependencies": {
-    "should": "4.4.x",
-    "supertest": "0.15.x"
-  },
-  "scripts": {
-    "start": "node app.js"
-  },
-  "api": {
-    "name": "API",
-    "basePath": "/API",
-    "main": "app.js"
-  }
-}
+    },
+    "devDependencies": {
+      "should": "4.4.x",
+      "supertest": "0.15.x"
+      },
+      "scripts": {
+        "start": "node app.js"
+        },
+        "api": {
+          "name": "API",
+          "basePath": "/API",
+          "main": "app.js"
+        }
+      }
