@@ -157,6 +157,7 @@ paths:
   #       default:
   #         description: Error
   #         schema: {}
+  
   /login:
     # binds a127 app logic to a route
     x-swagger-router-controller: login
@@ -197,7 +198,7 @@ paths:
       description: Posts a new user
       operationId: postUser
       parameters:
-        - name: {}
+        - name: user
           in: body
           description: User's info
           required: true
@@ -277,21 +278,25 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-
+            
   /users/{uuid}/list/save:
     x-swagger-router-controller: users
     x-volos-authorizations: {}
     x-volos-apply: {}
     post:
       x-volos-apply: {}
-      description: Stores a list to DB
+      description: Create new list under a user
       operationId: postList
       parameters:
-        - name: {}
+        - name: uuid
           in: path
-          description: user account uuid
+          description: User account id
           required: true
           type: string
+        - name: list
+          in: body
+          description: Post list data
+          required: true
           schema:
             properties:
               accountuuid:
@@ -300,17 +305,15 @@ paths:
                 type: string
               products:
                 type: string
-              
-            required: ["products", "listname", "accountuuid"]
+            required: ["accountuuid", "listname", "products"]
       responses:
         "200":
           description: Success
           schema: {}
         default:
           description: Error
-          schema: {}  
-  
-            
+          schema: {}
+          
   /lists/{uuid}:
     # binds a127 app logic to a route
     x-swagger-router-controller: lists
