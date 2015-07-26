@@ -26,7 +26,7 @@
 
     // console.log(options.url);
 
-    request.get( options,
+    request.get( "http://api.developer.sears.com/v2.1/products/search/"+store+"/json/keyword/"+keyword+"?apikey="+apikey,
       function(error, response, body){
         if(error){
           res.send(error);

@@ -31,6 +31,9 @@ angular.module('app', ['ionic', 'ngRoute', 'services.userServices', 'services.se
   function($scope, LoginService, UserService, UserListService, DealService, ProductService) {
   $scope.username = 'TestUsername';
   
+  /*
+    API tests
+  */
   LoginService.get({username: "g", password: "p"}, function(data){
     console.log("LoginService");
     console.log(data);
@@ -46,10 +49,11 @@ angular.module('app', ['ionic', 'ngRoute', 'services.userServices', 'services.se
     console.log(data);
   });
   
-  ProductService.get({keyword: "TV"}, function(data){
+  ProductService.get({keyword: "TV", store: "Sears"}, function(data){
     console.log("ProductService (List)");
     console.log(data);
   });
+ 
   
   ProductService.get({partnum: 1, store: "Sears"}, function(data){
     console.log("ProductService (Single)");
@@ -60,6 +64,17 @@ angular.module('app', ['ionic', 'ngRoute', 'services.userServices', 'services.se
     console.log("DealService");
     console.log(data);
   });
+  
+  /*
+    functions
+  */
+  
+  $scope.searchForProducts = function(query){
+    ProductService.get({keyword: query, store: "Sears"}, function(data){
+      console.log("ProductService (List)");
+      console.log(data);
+    });
+  };
   
 }])
 .run(function($ionicPlatform) {
