@@ -24,3 +24,5 @@ angular.module('starter', ['ionic'])
     }
   });
 });
+
+
