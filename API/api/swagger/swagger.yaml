@@ -240,7 +240,7 @@ paths:
           in: path
           description: user account uuid
           required: true
-          type: number
+          type: string
       responses:
         "200":
           description: Success
@@ -266,7 +266,7 @@ paths:
           in: path
           description: user account uuid
           required: true
-          type: number
+          type: string
       responses:
         "200":
           description: Success
@@ -322,7 +322,7 @@ paths:
           in: path
           description: list uuid
           required: true
-          type: number
+          type: string
       responses:
         "200":
           description: Success
