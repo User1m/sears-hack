@@ -1,4 +1,12 @@
 {
   "name": "SearsGiftRegistry",
-  "app_id": ""
+  "app_id": "3b72e063",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
 }
