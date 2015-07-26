@@ -26,53 +26,80 @@
 // });
 
 angular.module('app', ['ionic', 'ngRoute', 'services.userServices', 'services.searsServices', 'ionic.service.core'])
-.controller("MyController",
-  ['$scope', 'LoginService', 'UserService', 'UserListService', 'DealService', 'ProductService', 'RegistryService',
-  function ($scope, LoginService, UserService, UserListService, DealService, ProductService, RegistryService) {
-    $scope.username = 'TestUsername';
-
+  .controller("MyController",
+    ['$scope', 'LoginService', 'UserService', 'UserListService', 'DealService', 'ProductService', 'RegistryService', 'NewUserService',
+      'NewListService',
+      function ($scope, LoginService, UserService, UserListService, DealService, ProductService, RegistryService, NewUserService,
+        NewListService) {
+        $scope.username = 'TestUsername';
+  
         /*
           API tests
-          */
-          LoginService.get({ username: "g", password: "p" }, function (data) {
-            console.log("LoginService");
-            console.log(data);
-          });
+        */
+        // LoginService.get({ username: "g", password: "p" }, function (data) {
+        //   console.log("LoginService");
+        //   console.log(data);
+        // });
 
-          UserService.get({ id: 1 }, function (data) {
-            console.log("UserService");
-            console.log(data);
-          });
+        // UserService.get({ uuid: 1 }, function (data) {
+        //   console.log("UserService");
+        //   console.log(data);
+        // });
 
-          UserListService.get({ id: 1 }, function (data) {
-            console.log("UserListService");
-            console.log(data);
-          });
+        // UserListService.get({ uuid: 1 }, function (data) {
+        //   console.log("UserListService");
+        //   console.log(data);
+        // });
+        $scope.createUser = function(username, email, phone, userType, password, husband, wife){
+              NewUserService.save({
+                username: username, 
+                email: email, 
+                phone: phone, 
+                type: userType, 
+                password: password, 
+                husband: husband, 
+                wife: wife }, 
+                function(data){
+                  console.log("creating new user");
+                  console.log(data);
+              });
+        }
+        
+        $scope.createListForAccount = function(uuid, name, product_list){
+           NewListService.save({
+             accountuuid: uuid,
+             listname: name,
+             products: product_list}, function(data){
+               console.log("creating list for user " + uuid);
+               console.log(data);
+             });
+        };
 
-          RegistryService.get({ id: 1 }, function (data) {
-            console.log("RegistryService");
-            console.log(data);
-          });
 
-          ProductService.get({ keyword: "TV", store: "Sears" }, function (data) {
-            console.log("ProductService (List)");
-            console.log(data);
-          });
+        // RegistryService.get({ uuid: 1 }, function (data) {
+        //   console.log("RegistryService");
+        //   console.log(data);
+        // });
+
+        // ProductService.get({ keyword: "TV", store: "Sears" }, function (data) {
+        //   console.log("ProductService (List)");
+        //   console.log(data);
+        // });
 
 
-          ProductService.get({ partnum: 1, store: "Sears" }, function (data) {
-            console.log("ProductService (Single)");
-            console.log(data);
-          });
+        // ProductService.get({ partnum: 1, store: "Sears" }, function (data) {
+        //   console.log("ProductService (Single)");
+        //   console.log(data);
+        // });
 
-          DealService.get({ store: "Sears", category: "Electronics" }, function (data) {
-            console.log("DealService");
-            console.log(data);
-          });
-
+        // DealService.get({ store: "Sears", category: "Electronics" }, function (data) {
+        //   console.log("DealService");
+        //   console.log(data);
+        // });
+  
         /*
           functions
-          */
+        */
 
           $scope.products = [];
 
@@ -116,20 +143,25 @@ angular.module('app', ['ionic', 'ngRoute', 'services.userServices', 'services.se
     // Each state's controller can be found in controllers.js
     $stateProvider
 
-    .state('page2', {
-      url: '/login',
-      templateUrl: 'templates/page2.tpl.html'
-    })
+      .state('login', {
+        url: '/login',
+        templateUrl: 'templates/login.tpl.html'
+      })
 
-    .state('page4', {
-      url: '/search',
-      templateUrl: 'templates/page4.tpl.html'
-    })
-
-    .state('side-menu1', {
-      url: '/menu',
-      templateUrl: 'templates/side-menu1.tpl.html'
-    })
+      .state('search', {
+        url: '/search',
+        templateUrl: 'templates/search.tpl.html'
+      })
+      
+      .state('lists', {
+        url: '/lists',
+        templateUrl: 'templates/lists.tpl.html'
+      })
+      
+      .state('side-menu1', {
+        url: '/menu',
+        templateUrl: 'templates/side-menu1.tpl.html'
+      })
     ;
 
     // if none of the above states are matched, use this as the fallback
